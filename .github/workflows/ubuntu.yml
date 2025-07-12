@@ -1,0 +1,30 @@
+name: Remote Ubuntu
+
+on: [push, workflow_dispatch]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Install ngrok
+      run: |
+        curl -s -o ngrok.zip https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-linux-amd64.zip
+        unzip ngrok.zip
+        chmod +x ngrok
+        sudo mv ngrok /usr/local/bin
+
+    - name: Authenticate ngrok
+      run: ngrok config add-authtoken 2A0F21lOFxn1lMPRBa6PZVlSBYH_5iATaR2ZTSxHpMbnjHp7o
+
+    - name: Install & Start SSH server
+      run: |
+        sudo apt update
+        sudo apt install openssh-server -y
+        sudo service ssh start
+
+    - name: Set password for runner
+      run: echo 'runner:@H3rm4w4n' | sudo chpasswd
+
+    - name: Start ngrok tunnel for SSH (port 22)
+      run: ngrok tcp 22

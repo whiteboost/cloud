@@ -10,7 +10,7 @@ jobs:
     - name: Install Desktop & xrdp
       run: |
         sudo apt update
-        sudo apt install -y xfce4 xfce4-goodies xrdp
+        sudo apt install -y ubuntu-desktop xrdp
         sudo systemctl enable xrdp
         sudo adduser runner xrdp
         echo "runner:@H3rm4w4n" | sudo chpasswd
